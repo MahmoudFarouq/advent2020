@@ -3,7 +3,7 @@ use aoc_runner_derive::{aoc, aoc_generator};
 use regex::Regex;
 
 #[aoc_generator(day2)]
-fn parse_input_day1(input: &str) -> Result<Vec<(u32, u32, char, String)>, String> {
+fn parse_input_day2(input: &str) -> Result<Vec<(u32, u32, char, String)>, String> {
     let regex = Regex::new(
         r"(?P<minimum>\d+)-(?P<maximum>\d+) (?P<character>\w): (?P<password>\w+)").unwrap();
 
@@ -56,6 +56,13 @@ mod tests {
 
     #[test]
     fn test_part1() {
-        assert_eq!(1, 1);
+        let input = "1-3 a: abcde\n1-3 b: cdefg\n2-9 c: ccccccccc";
+        assert_eq!( day2_part1(&parse_input_day2(input).unwrap()), Some(2));
+    }
+
+    #[test]
+    fn test_part2() {
+        let input = "1-3 a: abcde\n1-3 b: cdefg\n2-9 c: ccccccccc";
+        assert_eq!( day2_part2(&parse_input_day2(input).unwrap()), Some(1));
     }
 }

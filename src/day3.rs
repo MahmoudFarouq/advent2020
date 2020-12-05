@@ -10,8 +10,7 @@ fn parse_input_day3(input: &str) -> Vec<Vec<u8>>{
         .collect()
 }
 
-
-fn solve_functional(input: &str, dx: usize, dy: usize) -> usize {
+fn _solve_functional(input: &str, dx: usize, dy: usize) -> usize {
     input
         .lines()
         .step_by(dy)
@@ -64,6 +63,13 @@ mod tests {
 
     #[test]
     fn test_part1() {
-        assert_eq!(1, 1);
+        let input = "..##.......\n#...#...#..\n.#....#..#.\n..#.#...#.#\n.#...##..#.\n..#.##.....\n.#.#.#....#\n.#........#\n#.##...#...\n#...##....#\n.#..#...#.#";
+        assert_eq!(day3_part1(&parse_input_day3(&input)), 7);
+    }
+
+    #[test]
+    fn test_part2() {
+        let input = "..##.......\n#...#...#..\n.#....#..#.\n..#.#...#.#\n.#...##..#.\n..#.##.....\n.#.#.#....#\n.#........#\n#.##...#...\n#...##....#\n.#..#...#.#";
+        assert_eq!(day3_part2(&parse_input_day3(&input)), 336);
     }
 }
