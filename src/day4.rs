@@ -1,5 +1,6 @@
 use std::collections::HashMap;
 
+use itertools::Itertools;
 use regex::Regex;
 use aoc_runner_derive::{aoc};
 
@@ -36,13 +37,11 @@ fn day4_part2(input: &str) -> i32 {
                 .replace('\n', " ")
         })
         .map(|passport| {
-            let mut map: HashMap<&str, &str> = HashMap::new();
-            let _ = passport
+            let map = passport
                 .split(" ")
                 .map(|field| {
-                    let res = field.split(":").collect::<Vec<&str>>();
-                    map.insert(res[0], res[1]);
-                }).collect::<()>();
+                    field.splitn(2, ":").collect_tuple().unwrap()
+                }).collect::<HashMap<&str, &str>>();
 
             match map.get("byr") {
                 None => return 0,
