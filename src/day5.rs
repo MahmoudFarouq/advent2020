@@ -1,50 +1,39 @@
 use aoc_runner_derive::{aoc};
 
-fn split(range: (i32, i32), c: char) -> (i32, i32) {
-    let half = (range.1 - range.0) / 2 + 1;
-    match c {
-        'F' | 'L' => (range.0       , range.1 - half),
-        'B' | 'R' => (range.0 + half, range.1       ),
-        _ => unreachable!()
-    }
+fn code_to_id(code: &str) -> usize {
+    let binary = code
+        .replace('F', "0")
+        .replace('B', "1")
+        .replace('L', "0")
+        .replace('R', "1");
+    usize::from_str_radix(&binary, 2).unwrap_or(0)
 }
 
 #[aoc(day5, part1)]
-fn day5_part1(input: &str) -> Option<i32> {
+fn day5_part1(input: &str) -> Option<usize> {
     input
         .lines()
         .map(|line|{
-            line[..7]
-                .chars()
-                .fold((0, 127), split).0 * 8 + 
-            line[7..]
-                .chars()
-                .fold((0, 7), split).0
+            code_to_id(&line[..7]) * 8 + code_to_id(&line[7..])
         })
         .max()
 }
 
 #[aoc(day5, part2)]
-fn day5_part2(input: &str) -> Option<i32> {
+fn day5_part2(input: &str) -> Option<usize> {
     let mut ids = input
         .lines()
         .map(|line|{
-            line[..7]
-                .chars()
-                .fold((0, 127), split).0 * 8 + 
-            line[7..]
-                .chars()
-                .fold((0, 7), split).0
+            code_to_id(&line[..7]) * 8 + code_to_id(&line[7..])
         })
-        .collect::<Vec<i32>>();
+        .collect::<Vec<usize>>();
     
     ids.sort();
-    for (i, _) in ids[..ids.len()-1].iter().enumerate() {
-        if ids[i] == ids[i+1] - 2 {
-            return Some(ids[i] + 1);
+    for window in ids.windows(2) {
+        if window[0] == window[1] - 2 {
+            return Some(window[0] + 1);
         } 
     }
-
     None
 }
 
