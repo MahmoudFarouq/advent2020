@@ -4,17 +4,21 @@ use regex::Regex;
 
 #[aoc_generator(day2)]
 fn parse_input_day2(input: &str) -> Result<Vec<(u32, u32, char, String)>, String> {
-    let regex = Regex::new(
-        r"(?P<minimum>\d+)-(?P<maximum>\d+) (?P<character>\w): (?P<password>\w+)").unwrap();
+    let regex =
+        Regex::new(r"(?P<minimum>\d+)-(?P<maximum>\d+) (?P<character>\w): (?P<password>\w+)")
+            .unwrap();
 
-    Ok(regex.captures_iter(input).map(|cap| {
-        (
-            cap[1].parse().unwrap(),
-            cap[2].parse().unwrap(),
-            cap[3].parse().unwrap(),
-            String::from(&cap[4])
-        )
-    }).collect::<Vec<(u32, u32, char, String)>>())
+    Ok(regex
+        .captures_iter(input)
+        .map(|cap| {
+            (
+                cap[1].parse().unwrap(),
+                cap[2].parse().unwrap(),
+                cap[3].parse().unwrap(),
+                String::from(&cap[4]),
+            )
+        })
+        .collect::<Vec<(u32, u32, char, String)>>())
 }
 
 #[aoc(day2, part1)]
@@ -38,7 +42,7 @@ fn day2_part2(input: &[(u32, u32, char, String)]) -> Option<i32> {
         let nd = chars[record.1 as usize - 1] as char;
 
         if st == record.2 && nd == record.2 {
-            continue
+            continue;
         }
 
         if st == record.2 || nd == record.2 {
@@ -48,8 +52,6 @@ fn day2_part2(input: &[(u32, u32, char, String)]) -> Option<i32> {
     Some(sum)
 }
 
-
-
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -57,12 +59,12 @@ mod tests {
     #[test]
     fn test_part1() {
         let input = "1-3 a: abcde\n1-3 b: cdefg\n2-9 c: ccccccccc";
-        assert_eq!( day2_part1(&parse_input_day2(input).unwrap()), Some(2));
+        assert_eq!(day2_part1(&parse_input_day2(input).unwrap()), Some(2));
     }
 
     #[test]
     fn test_part2() {
         let input = "1-3 a: abcde\n1-3 b: cdefg\n2-9 c: ccccccccc";
-        assert_eq!( day2_part2(&parse_input_day2(input).unwrap()), Some(1));
+        assert_eq!(day2_part2(&parse_input_day2(input).unwrap()), Some(1));
     }
 }

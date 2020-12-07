@@ -1,6 +1,6 @@
-use std::collections::{HashSet, HashMap};
+use std::collections::{HashMap, HashSet};
 
-use aoc_runner_derive::{aoc};
+use aoc_runner_derive::aoc;
 
 #[aoc(day6, part1)]
 fn day6_part1(input: &str) -> usize {
@@ -30,9 +30,7 @@ fn day6_part2(input: &str) -> usize {
                     acc
                 })
                 .iter()
-                .filter(|(_, &count)| {
-                    count == group_people
-                })
+                .filter(|(_, &count)| count == group_people)
                 .count()
         })
         .sum()

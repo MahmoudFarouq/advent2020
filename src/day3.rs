@@ -1,12 +1,10 @@
 use aoc_runner_derive::{aoc, aoc_generator};
 
 #[aoc_generator(day3)]
-fn parse_input_day3(input: &str) -> Vec<Vec<u8>>{
+fn parse_input_day3(input: &str) -> Vec<Vec<u8>> {
     input
         .lines()
-        .map(|line| {
-            Vec::from(line.as_bytes())
-        })
+        .map(|line| Vec::from(line.as_bytes()))
         .collect()
 }
 
@@ -17,7 +15,7 @@ fn _solve_functional(input: &str, dx: usize, dy: usize) -> usize {
         .zip(
             (0..input.find('\n').unwrap_or(input.len()))
                 .cycle()
-                .step_by(dx)
+                .step_by(dx),
         )
         .filter(|(line, nth)| line.get(*nth..=*nth) == Some("#"))
         .count()
@@ -29,7 +27,7 @@ fn solve_imperative(input: &[Vec<u8>], dx: usize, dy: usize) -> usize {
     let width = input[0].len();
 
     let mut sum = 0;
-    while y < input.len(){
+    while y < input.len() {
         if input[y][x] as char == '#' {
             sum += 1;
         }
@@ -46,16 +44,14 @@ fn day3_part1(input: &[Vec<u8>]) -> usize {
     solve_imperative(input, 3, 1)
 }
 
-
 #[aoc(day3, part2)]
 fn day3_part2(input: &[Vec<u8>]) -> usize {
-    solve_imperative(input, 1, 1) * 
-    solve_imperative(input, 3, 1) * 
-    solve_imperative(input, 5, 1) * 
-    solve_imperative(input, 7, 1) * 
-    solve_imperative(input, 1, 2)
+    solve_imperative(input, 1, 1)
+        * solve_imperative(input, 3, 1)
+        * solve_imperative(input, 5, 1)
+        * solve_imperative(input, 7, 1)
+        * solve_imperative(input, 1, 2)
 }
-
 
 #[cfg(test)]
 mod tests {

@@ -3,12 +3,8 @@ use std::num::ParseIntError;
 
 #[aoc_generator(day1)]
 fn parse_input_day1(input: &str) -> Result<Vec<i32>, ParseIntError> {
-    input
-        .lines()
-        .map(|l| l.parse())
-        .collect()
+    input.lines().map(|l| l.parse()).collect()
 }
-
 
 #[aoc(day1, part1)]
 fn day1_part1(input: &[i32]) -> Option<i32> {
@@ -56,34 +52,19 @@ fn day1_part2(input: &[i32]) -> Option<i32> {
     None
 }
 
-
 #[cfg(test)]
 mod tests {
     use super::*;
 
     #[test]
     fn test_part1() {
-        let input = vec![
-            1721,
-            979,
-            366,
-            299,
-            675,
-            1456,
-        ];
+        let input = vec![1721, 979, 366, 299, 675, 1456];
         assert_eq!(day1_part1(&input), Some(514579));
     }
 
     #[test]
     fn test_part2() {
-        let input = vec![
-            1721,
-            979,
-            366,
-            299,
-            675,
-            1456,
-        ];
+        let input = vec![1721, 979, 366, 299, 675, 1456];
         assert_eq!(day1_part2(&input), Some(241861950));
     }
 }

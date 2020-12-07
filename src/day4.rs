@@ -1,28 +1,28 @@
 use std::collections::HashMap;
 
+use aoc_runner_derive::aoc;
 use itertools::Itertools;
 use regex::Regex;
-use aoc_runner_derive::{aoc};
 
 #[aoc(day4, part1)]
 fn day4_part1(input: &str) -> i32 {
     input
-    .split("\n\n")
-    .map(|passport_data| {
-        passport_data
-            .replace('\n', " ")
-    })
-    .map(|passport| {
-        match passport
-            .split(" ")
-            .map(|field| field.split(":"))
-            .count() {
-            8 => 1,
-            7 => if passport.contains("cid:") { 0 } else { 1 },
-            _ => 0,
-        }
-    })
-    .sum()
+        .split("\n\n")
+        .map(|passport_data| passport_data.replace('\n', " "))
+        .map(
+            |passport| match passport.split(" ").map(|field| field.split(":")).count() {
+                8 => 1,
+                7 => {
+                    if passport.contains("cid:") {
+                        0
+                    } else {
+                        1
+                    }
+                }
+                _ => 0,
+            },
+        )
+        .sum()
 }
 
 #[aoc(day4, part2)]
@@ -32,16 +32,12 @@ fn day4_part2(input: &str) -> i32 {
 
     input
         .split("\n\n")
-        .map(|passport_data| {
-            passport_data
-                .replace('\n', " ")
-        })
+        .map(|passport_data| passport_data.replace('\n', " "))
         .map(|passport| {
             let map = passport
                 .split(" ")
-                .map(|field| {
-                    field.splitn(2, ":").collect_tuple().unwrap()
-                }).collect::<HashMap<&str, &str>>();
+                .map(|field| field.splitn(2, ":").collect_tuple().unwrap())
+                .collect::<HashMap<&str, &str>>();
 
             match map.get("byr") {
                 None => return 0,
@@ -68,7 +64,7 @@ fn day4_part2(input: &str) -> i32 {
                     }
                 }
             }
-            
+
             match map.get("eyr") {
                 None => return 0,
                 Some(value) => {
@@ -85,7 +81,7 @@ fn day4_part2(input: &str) -> i32 {
             match map.get("hgt") {
                 None => return 0,
                 Some(value) => {
-                    let v = value[..value.len()-2].parse::<i32>().unwrap_or(0);
+                    let v = value[..value.len() - 2].parse::<i32>().unwrap_or(0);
                     if value.ends_with("cm") {
                         if v < 150 || v > 193 {
                             return 0;
@@ -138,8 +134,7 @@ mod test {
 
     #[test]
     fn test_part1() {
-        let input = 
-"ecl:gry pid:860033327 eyr:2020 hcl:#fffffd
+        let input = "ecl:gry pid:860033327 eyr:2020 hcl:#fffffd
 byr:1937 iyr:2017 cid:147 hgt:183cm
 
 iyr:2013 ecl:amb cid:350 eyr:2023 pid:028048884
@@ -158,8 +153,7 @@ iyr:2011 ecl:brn hgt:59in";
 
     #[test]
     fn test_part2() {
-        let input = 
-            "eyr:1972 cid:100
+        let input = "eyr:1972 cid:100
             hcl:#18171d ecl:amb hgt:170 pid:186cm iyr:2018 byr:1926
 
             iyr:2019
@@ -171,7 +165,8 @@ iyr:2011 ecl:brn hgt:59in";
 
             hgt:59cm ecl:zzz
             eyr:2038 hcl:74454a iyr:2023
-            pid:3556412378 byr:2007".replace("            ", "");
+            pid:3556412378 byr:2007"
+            .replace("            ", "");
 
         assert_eq!(day4_part2(&input), 0);
     }
