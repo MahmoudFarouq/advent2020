@@ -81,20 +81,21 @@ fn day8_part1(input: &str) -> Option<usize> {
 
 #[aoc(day8, part2)]
 fn day8_part2(input: &str) -> Option<usize> {
-    let instructions = parse(input);
+    let mut instructions = parse(input);
 
-    for (i, instruction) in instructions.iter().enumerate() {
-        let mut copy = parse(input); // STUPID Step!!
-        copy.get_mut(i).unwrap().opcode = match instruction.opcode {
+    for index in 0..instructions.len() {
+        let old_opcode = instructions[index].opcode.clone();
+        instructions[index].opcode = match instructions[index].opcode {
             OpCode::JMP => OpCode::NOP,
             OpCode::NOP => OpCode::JMP,
             _ => continue
         };
-        if let Some((last_pc, value)) = execute(&copy) {
+        if let Some((last_pc, value)) = execute(&instructions) {
             if last_pc >= instructions.len() {
                 return Some(value);
             }
         }
+        instructions[index].opcode = old_opcode;
     }
     None
 }
