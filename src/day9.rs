@@ -10,12 +10,25 @@ fn parse_input_day9(input: &str) -> Vec<usize> {
 
 #[aoc(day9, part1)]
 fn day9_part1(input: &[usize]) -> Option<usize> {
-    Some(solve(input, 25))
+    solve_part1(input, 25)
 }
 
 #[aoc(day9, part2)]
 fn day9_part2(input: &[usize]) -> Option<usize> {
-    let invalid_number = solve(input, 25);
+    solve_part2(input, 25)
+}
+
+fn solve_part1(input: &[usize], preamble: usize) -> Option<usize> {
+    input
+        .windows(preamble + 1)
+        .find(|&window| search(&window[..window.len() - 1], window[window.len() - 1]).is_none())
+        .unwrap()
+        .last()
+        .cloned()
+}
+
+fn solve_part2(input: &[usize], preamble: usize) -> Option<usize> {
+    let invalid_number = solve_part1(input, preamble).unwrap();
 
     for pointer in 0..input.len() {
         let mut walking_sum = 0;
@@ -34,16 +47,6 @@ fn day9_part2(input: &[usize]) -> Option<usize> {
     }
 
     None
-}
-
-fn solve(input: &[usize], preamble: usize) -> usize {
-    input
-        .windows(preamble + 1)
-        .find(|&window| search(&window[..window.len() - 1], window[window.len() - 1]).is_none())
-        .unwrap()
-        .last()
-        .unwrap()
-        .clone()
 }
 
 fn search(input: &[usize], item: usize) -> Option<usize> {
@@ -91,7 +94,7 @@ mod test {
 277
 309
 576";
-        assert_eq!(solve(&parse_input_day9(input), 5), 127);
+        assert_eq!(solve_part1(&parse_input_day9(input), 5), Some(127));
     }
 
     #[test]
@@ -116,6 +119,6 @@ mod test {
 277
 309
 576";
-        assert_eq!(day9_part2(&parse_input_day9(input)), Some(62));
+        assert_eq!(solve_part2(&parse_input_day9(input), 5), Some(62));
     }
 }
