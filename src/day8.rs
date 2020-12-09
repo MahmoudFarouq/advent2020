@@ -1,5 +1,5 @@
-use itertools::Itertools;
 use aoc_runner_derive::aoc;
+use itertools::Itertools;
 
 #[derive(Debug, Clone)]
 enum OpCode {
@@ -14,7 +14,7 @@ impl OpCode {
             "nop" => OpCode::NOP,
             "jmp" => OpCode::JMP,
             "acc" => OpCode::ACC,
-            _ => unreachable!()
+            _ => unreachable!(),
         }
     }
 }
@@ -29,7 +29,7 @@ impl Instruction {
     fn new(opcode: &str, value: isize) -> Self {
         Self {
             opcode: OpCode::from(opcode),
-            value
+            value,
         }
     }
 }
@@ -37,15 +37,8 @@ impl Instruction {
 fn parse(input: &str) -> Vec<Instruction> {
     input
         .lines()
-        .map(|line| {
-            line
-                .splitn(2, " ")
-                .collect_tuple()
-                .unwrap()
-        })
-        .map(|(opcode, value)| {
-            Instruction::new(&opcode, value.parse::<isize>().unwrap())
-        })
+        .map(|line| line.splitn(2, " ").collect_tuple().unwrap())
+        .map(|(opcode, value)| Instruction::new(&opcode, value.parse::<isize>().unwrap()))
         .collect::<Vec<_>>()
 }
 
@@ -62,7 +55,7 @@ fn execute(instructions: &[Instruction]) -> Option<(usize, usize)> {
             match instruction.opcode {
                 OpCode::ACC => accumulator += instruction.value,
                 OpCode::JMP => pc_diff = instruction.value,
-                OpCode::NOP => {},
+                OpCode::NOP => {}
             };
             visits[pc as usize] = true;
             pc += pc_diff;
@@ -88,7 +81,7 @@ fn day8_part2(input: &str) -> Option<usize> {
         instructions[index].opcode = match instructions[index].opcode {
             OpCode::JMP => OpCode::NOP,
             OpCode::NOP => OpCode::JMP,
-            _ => continue
+            _ => continue,
         };
         if let Some((last_pc, value)) = execute(&instructions) {
             if last_pc >= instructions.len() {
@@ -106,8 +99,7 @@ mod tests {
 
     #[test]
     fn test_part1() {
-        let input = 
-"nop +0
+        let input = "nop +0
 acc +1
 jmp +4
 acc +3
@@ -121,8 +113,7 @@ acc +6";
 
     #[test]
     fn test_part2() {
-        let input = 
-"nop +0
+        let input = "nop +0
 acc +1
 jmp +4
 acc +3
