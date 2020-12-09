@@ -13,7 +13,7 @@ fn _solve_functional(input: &str, dx: usize, dy: usize) -> usize {
         .lines()
         .step_by(dy)
         .zip(
-            (0..input.find('\n').unwrap_or(input.len()))
+            (0..input.find('\n').unwrap_or_else(|| input.len()))
                 .cycle()
                 .step_by(dx),
         )

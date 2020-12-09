@@ -9,19 +9,17 @@ fn day4_part1(input: &str) -> i32 {
     input
         .split("\n\n")
         .map(|passport_data| passport_data.replace('\n', " "))
-        .map(
-            |passport| match passport.split(" ").map(|field| field.split(":")).count() {
-                8 => 1,
-                7 => {
-                    if passport.contains("cid:") {
-                        0
-                    } else {
-                        1
-                    }
+        .map(|passport| match passport.split(' ').count() {
+            8 => 1,
+            7 => {
+                if passport.contains("cid:") {
+                    0
+                } else {
+                    1
                 }
-                _ => 0,
-            },
-        )
+            }
+            _ => 0,
+        })
         .sum()
 }
 
@@ -35,8 +33,8 @@ fn day4_part2(input: &str) -> i32 {
         .map(|passport_data| passport_data.replace('\n', " "))
         .map(|passport| {
             let map = passport
-                .split(" ")
-                .map(|field| field.splitn(2, ":").collect_tuple().unwrap())
+                .split(' ')
+                .map(|field| field.splitn(2, ':').collect_tuple().unwrap())
                 .collect::<HashMap<&str, &str>>();
 
             match map.get("byr") {

@@ -37,7 +37,7 @@ impl Instruction {
 fn parse(input: &str) -> Vec<Instruction> {
     input
         .lines()
-        .map(|line| line.splitn(2, " ").collect_tuple().unwrap())
+        .map(|line| line.splitn(2, ' ').collect_tuple().unwrap())
         .map(|(opcode, value)| Instruction::new(&opcode, value.parse::<isize>().unwrap()))
         .collect::<Vec<_>>()
 }
@@ -46,30 +46,26 @@ fn execute(instructions: &[Instruction]) -> Option<(usize, usize)> {
     let mut accumulator = 0;
     let mut pc: isize = 0;
     let mut visits = vec![false; instructions.len()];
-    loop {
-        if let Some(instruction) = instructions.get(pc as usize) {
-            if visits[pc as usize] {
-                break;
-            }
-            let mut pc_diff = 1;
-            match instruction.opcode {
-                OpCode::ACC => accumulator += instruction.value,
-                OpCode::JMP => pc_diff = instruction.value,
-                OpCode::NOP => {}
-            };
-            visits[pc as usize] = true;
-            pc += pc_diff;
-        } else {
+    while let Some(instruction) = instructions.get(pc as usize) {
+        if visits[pc as usize] {
             break;
         }
+        let mut pc_diff = 1;
+        match instruction.opcode {
+            OpCode::ACC => accumulator += instruction.value,
+            OpCode::JMP => pc_diff = instruction.value,
+            OpCode::NOP => {}
+        };
+        visits[pc as usize] = true;
+        pc += pc_diff;
     }
     Some((pc as usize, accumulator as usize))
 }
 
 #[aoc(day8, part1)]
 fn day8_part1(input: &str) -> Option<usize> {
-    let mut instructions = parse(input);
-    Some(execute(&mut instructions).unwrap().1)
+    let instructions = parse(input);
+    Some(execute(&instructions).unwrap().1)
 }
 
 #[aoc(day8, part2)]

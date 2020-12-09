@@ -1,4 +1,5 @@
 use aoc_runner_derive::{aoc, aoc_generator};
+use std::cmp::Ordering;
 
 #[aoc_generator(day9)]
 fn parse_input_day9(input: &str) -> Vec<usize> {
@@ -51,18 +52,16 @@ fn solve_part2(input: &[usize], preamble: usize) -> Option<usize> {
 
 fn search(input: &[usize], item: usize) -> Option<usize> {
     let mut copy = Vec::from(input);
-    copy.sort();
+    copy.sort_unstable();
 
     let mut first_index = 0;
     let mut second_index = copy.len() - 1;
     while first_index < second_index {
         let sum = copy[first_index] + copy[second_index];
-        if sum > item {
-            second_index -= 1;
-        } else if sum < item {
-            first_index += 1;
-        } else {
-            return Some(0);
+        match sum.cmp(&item) {
+            Ordering::Greater => second_index -= 1,
+            Ordering::Less => first_index += 1,
+            _ => return Some(0),
         }
     }
     None

@@ -24,7 +24,7 @@ fn day5_part2(input: &str) -> Option<usize> {
         .map(|line| code_to_id(&line[..7]) * 8 + code_to_id(&line[7..]))
         .collect::<Vec<usize>>();
 
-    ids.sort();
+    ids.sort_unstable();
     for window in ids.windows(2) {
         if window[0] == window[1] - 2 {
             return Some(window[0] + 1);
