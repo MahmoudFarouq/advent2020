@@ -37,21 +37,17 @@ fn day10_part2(rates: &[usize]) -> Option<usize> {
         .skip(1)
         .map(|(index, &node)| {
             let start = index + 1;
-            let end = start + 3.min(rates.len() - index - 1);
-            let candidates_count = &rates[start..end]
+            memo[index] = rates[start..]
                 .iter()
-                .filter(|&&candidate| (candidate as isize - node as isize) <= 3)
-                .count();
-
-            memo[index] = if *candidates_count == 1 {
-                memo[start]
-            } else {
-                memo[start..start + candidates_count].iter().sum()
-            }
+                .take(3)
+                .filter(|&&rate| (rate as isize - node as isize) <= 3)
+                .zip(&memo[start..])
+                .map(|(_, &count)| count)
+                .sum();
         })
         .for_each(drop);
 
-    Some(memo[0])
+    memo.first().copied()
 }
 
 #[cfg(test)]
@@ -78,12 +74,18 @@ mod tests {
 }
 
 /*
-0       1   4    5      6     7     10     11   12       15     16     19   22
-                                                                            1
-                                                                        1
-                                                                1
-                                                        1
+0   1   4   5   6   7   10  11  12  15  16  19  22
                                                 1
                                             1
-                                    2
+                                        1
+                                    1
+                                1
+                            1
+                        2
+                    2
+                2
+            4
+        8
+    8
+8
 */
