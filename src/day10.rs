@@ -24,7 +24,7 @@ fn day10_part1(rates: &[usize]) -> Option<usize> {
 #[aoc(day10, part2)]
 fn day10_part2(rates: &[usize]) -> Option<usize> {
     let mut rates = Vec::from(rates);
-    rates.push(rates.last().unwrap().clone() + 3); // Phone
+    rates.push(*rates.last().unwrap() + 3); // Phone
     rates.insert(0, 0); // charging outlet
 
     let mut memo = vec![0; rates.len()];
