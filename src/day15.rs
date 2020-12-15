@@ -2,7 +2,6 @@ use std::collections::HashMap;
 
 use aoc_runner_derive::{aoc, aoc_generator};
 
-
 #[aoc_generator(day15)]
 fn parse_input_day13(input: &str) -> Vec<usize> {
     input
@@ -22,36 +21,27 @@ fn day15_part2(numbers: &[usize]) -> Option<usize> {
 }
 
 fn solver(numbers: &[usize], nth: usize) -> Option<usize> {
-    let mut memory = Vec::from(numbers);
     let mut occurrences: HashMap<usize, Vec<usize>> = HashMap::new();
 
-    let mut i = 0;
-    for &num in memory.iter() {
-        occurrences
-            .entry(num)
-            .or_default()
-            .push(i);
-        i += 1;
-    }
+    numbers
+        .iter()
+        .enumerate()
+        .for_each(|(i, &num)| occurrences.entry(num).or_default().push(i));
 
-    while i < nth {
-        let occ = occurrences.get(memory.last().unwrap()).unwrap();
-
-        let new;
-        if occ.len() == 1 {
-            new = 0;
-        } else {
-            new = occ[occ.len() - 1] - occ[occ.len() - 2];
-        }
-
-        memory.push(new);
-        occurrences
-            .entry(new)
-            .or_default()
-            .push(i);
-        i += 1;
-    }
-    memory.last().cloned()
+    (numbers.len()..nth)
+        .into_iter()
+        .fold(numbers.last().unwrap().clone(), |latest, i| {
+            let occ = occurrences.get(&latest).unwrap();
+            let latest = if occ.len() == 1 {
+                0
+            } else {
+                occ[occ.len() - 1] - occ[occ.len() - 2]
+            };
+            occurrences.entry(latest).or_default().push(i);
+            latest
+        })
+        .clone()
+        .into()
 }
 
 #[cfg(test)]

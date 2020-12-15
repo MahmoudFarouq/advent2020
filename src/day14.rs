@@ -2,12 +2,12 @@ use std::collections::HashMap;
 
 use regex::Regex;
 
-use aoc_runner_derive::{aoc};
+use aoc_runner_derive::aoc;
 
 #[derive(Debug)]
-enum InputLine{
+enum InputLine {
     Mask(String),
-    Write(usize, usize)
+    Write(usize, usize),
 }
 
 fn parse_input_day14(input: &str) -> Vec<InputLine> {
@@ -17,12 +17,10 @@ fn parse_input_day14(input: &str) -> Vec<InputLine> {
         .lines()
         .map(|line| {
             if mask_reg.is_match(line) {
-                InputLine::Mask(
-                    mask_reg.captures_iter(line).last().unwrap()[1].to_owned())
+                InputLine::Mask(mask_reg.captures_iter(line).last().unwrap()[1].to_owned())
             } else if write_reg.is_match(line) {
                 let cap = write_reg.captures_iter(line).last().unwrap();
-                InputLine::Write(
-                    cap[1].parse().unwrap(), cap[2].parse().unwrap())
+                InputLine::Write(cap[1].parse().unwrap(), cap[2].parse().unwrap())
             } else {
                 unreachable!()
             }
@@ -39,7 +37,7 @@ fn day14_part1(input: &str) -> Option<usize> {
         match line {
             InputLine::Mask(mask) => {
                 current_mask = mask;
-            },
+            }
             InputLine::Write(address, value) => {
                 let mut binary: Vec<_> = format!("{:036b}", value).chars().collect();
                 current_mask
@@ -51,7 +49,8 @@ fn day14_part1(input: &str) -> Option<usize> {
                         }
                     })
                     .for_each(drop);
-                *memory.entry(*address).or_default() = usize::from_str_radix(&binary.iter().collect::<String>(), 2).unwrap();
+                *memory.entry(*address).or_default() =
+                    usize::from_str_radix(&binary.iter().collect::<String>(), 2).unwrap();
             }
         }
     }
@@ -68,7 +67,7 @@ fn day14_part2(input: &str) -> Option<usize> {
         match line {
             InputLine::Mask(mask) => {
                 current_mask = mask;
-            },
+            }
             InputLine::Write(address, value) => {
                 let mut binary: Vec<_> = format!("{:036b}", address).chars().collect();
                 binary = current_mask
@@ -82,7 +81,7 @@ fn day14_part2(input: &str) -> Option<usize> {
                         }
                     })
                     .collect();
-                
+
                 let mut combinations = Vec::new();
                 combinations.push(binary);
                 while !combinations.is_empty() {
@@ -101,7 +100,12 @@ fn day14_part2(input: &str) -> Option<usize> {
                         }
                     }
                     if flag {
-                        *memory.entry(usize::from_str_radix(&current.iter().collect::<String>(), 2).unwrap()).or_default() = *value;
+                        *memory
+                            .entry(
+                                usize::from_str_radix(&current.iter().collect::<String>(), 2)
+                                    .unwrap(),
+                            )
+                            .or_default() = *value;
                     }
                 }
             }
@@ -117,7 +121,8 @@ mod test {
 
     #[test]
     fn test_part1() {
-        let input = "mask = XXXXXXXXXXXXXXXXXXXXXXXXXXXXX1XXXX0X\nmem[8] = 11\nmem[7] = 101\nmem[8] = 0";
+        let input =
+            "mask = XXXXXXXXXXXXXXXXXXXXXXXXXXXXX1XXXX0X\nmem[8] = 11\nmem[7] = 101\nmem[8] = 0";
         assert_eq!(day14_part1(input), Some(165))
     }
 
