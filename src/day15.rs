@@ -30,7 +30,7 @@ fn solver(numbers: &[usize], nth: usize) -> Option<usize> {
 
     (numbers.len()..nth)
         .into_iter()
-        .fold(numbers.last().unwrap().clone(), |latest, i| {
+        .fold(*numbers.last().unwrap(), |latest, i| {
             let occ = occurrences.get(&latest).unwrap();
             let latest = if occ.len() == 1 {
                 0
