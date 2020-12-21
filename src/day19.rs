@@ -36,7 +36,7 @@ fn calculate_regex_for_rule_p1(rules: &[String], index: &usize) -> String {
                     format!(
                         r#"({})"#,
                         pat.trim()
-                            .split(" ")
+                            .split(' ')
                             .map(|inner_rule| {
                                 let index = inner_rule.parse::<usize>().unwrap();
                                 calculate_regex_for_rule_p1(rules, &index)
@@ -86,7 +86,7 @@ fn calculate_regex_for_rule_p2(rules: &[String], index: &usize) -> String {
                     format!(
                         r#"({})"#,
                         pat.trim()
-                            .split(" ")
+                            .split(' ')
                             .map(|inner_rule| {
                                 let index = inner_rule.parse::<usize>().unwrap();
                                 calculate_regex_for_rule_p2(rules, &index)

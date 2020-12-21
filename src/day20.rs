@@ -15,7 +15,7 @@ impl Edge {
         Self::from(i)
     }
 
-    fn into_usize(&self) -> usize {
+    fn as_usize(&self) -> usize {
         match *self {
             Edge::Top => 0,
             Edge::Right => 1,
@@ -112,8 +112,8 @@ fn day20_part1(tiles: &[Tile]) -> Option<usize> {
             // If we are not another side of the same tile that is like this one
             // and our directions are opposites, then we are connected.
             if *neighbor_id != tile.id {
-                adjacent_list.entry(tile.id).or_default()[dir.into_usize()] = *neighbor_id;
-                adjacent_list.entry(*neighbor_id).or_default()[neighbor_edge.into_usize()] =
+                adjacent_list.entry(tile.id).or_default()[dir.as_usize()] = *neighbor_id;
+                adjacent_list.entry(*neighbor_id).or_default()[neighbor_edge.as_usize()] =
                     tile.id;
             }
         }
